@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<settings>
+    <host>BrazilV.local</host>
+    <port>7110</port>
+    <width>320</width>
+    <height>240</height>
+    <framerate>30</framerate>
+    <debug>0</debug>
+    <!-- * -->
+    <!-- camera settings -->
+    <sharpness>50</sharpness>
+	<contrast>0</contrast>
+	<brightness>50</brightness>
+	<iso>800</iso>
+	<exposure_mode>0</exposure_mode>
+    <exposure_compensation>0</exposure_compensation>
+	<shutter_speed>100000</shutter_speed>
+    <!-- * -->
+    <!-- streaming settings -->
+    <stream_port>7111</stream_port>
+    <max_stream_connections>5</max_stream_connections>
+    <max_stream_bitrate>256</max_stream_bitrate>
+    <max_stream_framerate>30</max_stream_framerate>
+    <max_stream_queue>1</max_stream_queue>   
+</settings>
+<!--
+    pyrScale // 0 to 1, default 0.5
+    levels // 1 to 8, default 4
+    winsize // 4 to 64, default 8
+    iterations // 1 to 8, default 2
+    polyN // 5 to 10, default 7
+    polySigma // 1.1 to 2, default 
+    OPTFLOW_FARNEBACK_GAUSSIAN // default false
+    winSize // 4 to 64, default 32
+    maxLevel // 0 to 8, default 3
+    maxFeatures// 1 to 1000, default 200
+    qualityLevel // 0.001 to 0.02, default 0.01
+    minDistance // 1 to 16, default 4
+-->

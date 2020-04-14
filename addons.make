@@ -1,0 +1,12 @@
+ofxXmlSettings
+ofxOpenCv
+ofxCv
+ofxCvPiCam
+ofxHTTP
+ofxIO
+ofxMediaType
+ofxNetworkUtils
+ofxPoco
+ofxSSLManager
+ofxJSON
+ofxGui
