@@ -127,7 +127,7 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    ofBackground(0);
+    ofBackground(0,0,255);
     if (debug) {
         projectorFbo.begin();
         ofTranslate(mouseX, mouseY);  
@@ -142,6 +142,7 @@ void ofApp::draw() {
 
 void ofApp::updateStreamingVideo() {
     sendFbo.begin();
+    projectorFbo.draw(0,0);
     if(homographyReady) {
         imitate(warpedColor, frame);
         // this is how you warp one ofImage into another ofImage given the homography matrix
