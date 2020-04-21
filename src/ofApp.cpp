@@ -28,6 +28,7 @@ void ofApp::setup() {
     mouseY = 0;
     imageStartSize = camWidth/2;
     imageSizeIncrement = 10;
+    screenMarginW = (ofGetWidth() - ((float) camWidth * ((float) ofGetHeight() / (float) camHeight))) / 2;
     imageChangeSize(imageStartSize);
 
     ofSetFrameRate(framerate);
@@ -78,12 +79,7 @@ void ofApp::setup() {
     sendFbo.allocate(camWidth*2, camHeight, GL_RGBA);
     pixels.allocate(camWidth*2, camHeight, OF_IMAGE_COLOR);
     projectorFbo.allocate(camWidth, camHeight, GL_RGBA);
-
-    fboScaleW = ofGetWidth();
-    fboScaleH = int(((float) ofGetWidth() / (float) sendFbo.getWidth()) * (float) ofGetHeight());
-    fboPosX = 0;
-    fboPosY = abs((ofGetHeight() - fboScaleH))/2;
-    
+   
     streamPort = settings.getValue("settings:stream_port", 7111);
     streamSettings.setPort(streamPort);
     streamSettings.ipVideoRouteSettings.setMaxClientConnections(settings.getValue("settings:max_stream_connections", 5)); // default 5
@@ -131,9 +127,9 @@ void ofApp::draw() {
         target.draw(-target.getWidth()/2,-target.getHeight()/2);  
         projectorFbo.end();
 
-        projectorFbo.draw(0, 0, fboScaleW, fboScaleH);
+        projectorFbo.draw(screenMarginW, 0, ofGetWidth()-screenMarginW, ofGetHeight());
     } else {
-        warpedColor.draw(0, 0, fboScaleW, fboScaleH);
+        warpedColor.draw(screenMarginW, 0, ofGetWidth()-screenMarginW, ofGetHeight());
     }
 }
 

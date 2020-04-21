@@ -43,7 +43,6 @@ class ofApp : public ofBaseApp {
         int camExposureMode; // 0 to 13, default 0
 
         ofFbo sendFbo, projectorFbo;
-        int fboScaleW, fboScaleH, fboPosX, fboPosY;
         ofPixels pixels;
 
         int streamPort;
@@ -54,6 +53,7 @@ class ofApp : public ofBaseApp {
         bool camReady;
         ofImage target;
         int mouseX, mouseY, imageW, imageH, imageStartSize, imageSizeIncrement;
+        int screenMarginW;
         float imageRatio;
         bool moveTarget;
 
