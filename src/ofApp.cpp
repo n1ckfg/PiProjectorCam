@@ -130,6 +130,7 @@ void ofApp::draw() {
     ofBackground(0,0,255);
     if (debug) {
         projectorFbo.begin();
+        ofBackground(0);
         ofTranslate(mouseX, mouseY);  
         target.draw(-target.getWidth()/2,-target.getHeight()/2);  
         projectorFbo.end();
