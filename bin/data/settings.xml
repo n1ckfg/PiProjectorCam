@@ -5,7 +5,8 @@
     <width>320</width>
     <height>240</height>
     <framerate>30</framerate>
-    <debug>0</debug>
+    <debug>1</debug>
+    <use_rpi_cam>1</use_rpi_cam>
     <!-- * -->
     <!-- camera settings -->
     <sharpness>50</sharpness>
