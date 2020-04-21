@@ -130,7 +130,7 @@ void ofApp::updateStreamingVideo() {
 //~ ~ ~ homography
 
 void ofApp::setupHomography() {
-    FileStorage settings(ofToDataPath("settings.yml"), FileStorage::READ);
+    FileStorage settings(ofToDataPath("calibration/target/target_settings.yml"), FileStorage::READ);
     if (settings.isOpened()) {
         int xCount = settings["xCount"], yCount = settings["yCount"];
         calibration.setPatternSize(xCount, yCount);
