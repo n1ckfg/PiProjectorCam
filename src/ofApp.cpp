@@ -89,7 +89,7 @@ void ofApp::update() {
 
     if (!useRpiCam) {
         vidGrabber.update();
-        frame = toOf(vidGrabber);
+        frame = toCv(vidGrabber);
         if (vidGrabber.isFrameNew()) camReady = true;
     } else {
         frame = cam.grab();

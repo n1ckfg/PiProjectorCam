@@ -53,6 +53,7 @@ class ofApp : public ofBaseApp {
         void updateStreamingVideo();
 
         bool camReady;
+        ofImage target;
 
         //~ ~ ~ homography
 
