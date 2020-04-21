@@ -5,16 +5,12 @@ using namespace ofxCv;
 
 //--------------------------------------------------------------
 void ofApp::imageChangeSize(int newSize) {
-    if (target.getWidth() > target.getHeight()) {
-        imageRatio = (float) target.getWidth() / (float) target.getHeight();
-        imageW = newSize;
-        imageH = (int) ((float) imageW * imageRatio);
-    } else {
-        imageRatio = (float) target.getHeight() / (float) target.getWidth();
-        imageH = newSize;
-        imageW = (int) ((float) imageH * imageRatio);
-    }    
+    imageRatio = (float) target.getHeight() / (float) target.getWidth();
+    imageW = newSize;
+    imageH = (int) ((float) imageW * imageRatio);
+ 
     target.resize(imageW, imageH);
+    target.update();
 }
 
 
@@ -30,8 +26,8 @@ void ofApp::setup() {
     target.load("calibration/target/target.png");
     mouseX = 0;
     mouseY = 0;
-    imageStartSize = 512;
-    imageSizeIncrement = 16;
+    imageStartSize = camWidth/2;
+    imageSizeIncrement = 10;
     imageChangeSize(imageStartSize);
 
     ofSetFrameRate(framerate);
