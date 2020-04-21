@@ -28,7 +28,7 @@ void ofApp::setup() {
     mouseY = 0;
     imageStartSize = camWidth/2;
     imageSizeIncrement = 10;
-    screenMarginW = (ofGetWidth() - ((float) camWidth * ((float) ofGetHeight() / (float) camHeight))) / 2;
+    screenMarginW = ofGetWidth() - ((float) camWidth * ((float) ofGetHeight() / (float) camHeight));
     imageChangeSize(imageStartSize);
 
     ofSetFrameRate(framerate);
@@ -127,9 +127,9 @@ void ofApp::draw() {
         target.draw(-target.getWidth()/2,-target.getHeight()/2);  
         projectorFbo.end();
 
-        projectorFbo.draw(screenMarginW, 0, ofGetWidth()-screenMarginW, ofGetHeight());
+        projectorFbo.draw(screenMarginW/2, 0, ofGetWidth()-screenMarginW, ofGetHeight());
     } else {
-        warpedColor.draw(screenMarginW, 0, ofGetWidth()-screenMarginW, ofGetHeight());
+        warpedColor.draw(screenMarginW/2, 0, ofGetWidth()-screenMarginW, ofGetHeight());
     }
 }
 
