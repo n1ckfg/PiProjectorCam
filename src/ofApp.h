@@ -24,8 +24,7 @@ class ofApp : public ofBaseApp {
         int framerate;
 
         ofVideoGrabber vidGrabber;
-        int camWidth;
-        int camHeight;
+        int camWidth, camHeight;
 
         ofxCvPiCam cam;
         cv::Mat frame;
@@ -43,7 +42,7 @@ class ofApp : public ofBaseApp {
         // 0 off, 1 auto, 2 night, 3 night preview, 4 backlight, 5 spotlight, 6 sports, 7, snow, 8 beach, 9 very long, 10 fixed fps, 11 antishake, 12 fireworks, 13 max
         int camExposureMode; // 0 to 13, default 0
 
-        ofFbo fbo;
+        ofFbo sendFbo, projectorFbo;
         int fboScaleW, fboScaleH, fboPosX, fboPosY;
         ofPixels pixels;
 
@@ -54,6 +53,8 @@ class ofApp : public ofBaseApp {
 
         bool camReady;
         ofImage target;
+        int mouseX, mouseY, imageW, imageH, imageStartSize, imageSizeIncrement;
+        float imageRatio;
         bool moveTarget;
 
         //~ ~ ~ homography
@@ -83,5 +84,6 @@ class ofApp : public ofBaseApp {
         string inputFileType = "jpg";
         string outputFileType = "png";
         bool finished = false;
+        void imageChangeSize(int newSize);
 
 };

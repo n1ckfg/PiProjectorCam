@@ -4,6 +4,20 @@ using namespace cv;
 using namespace ofxCv;
 
 //--------------------------------------------------------------
+void ofApp::imageChangeSize(int newSize) {
+    if (target.getWidth() > target.getHeight()) {
+        imageRatio = (float) target.getWidth() / (float) target.getHeight();
+        imageW = newSize;
+        imageH = (int) ((float) imageW * imageRatio);
+    } else {
+        imageRatio = (float) target.getHeight() / (float) target.getWidth();
+        imageH = newSize;
+        imageW = (int) ((float) imageH * imageRatio);
+    }    
+    target.resize(imageW, imageH);
+}
+
+
 void ofApp::setup() {
     settings.loadFile("settings.xml");
 
@@ -14,6 +28,11 @@ void ofApp::setup() {
     framerate = settings.getValue("settings:framerate", 60);
 
     target.load("calibration/target/target.png");
+    mouseX = 0;
+    mouseY = 0;
+    imageStartSize = 512;
+    imageSizeIncrement = 16;
+    imageChangeSize(imageStartSize);
 
     ofSetFrameRate(framerate);
     ofSetVerticalSync(true);
@@ -60,13 +79,15 @@ void ofApp::setup() {
     // * stream video *
     // https://github.com/bakercp/ofxHTTP/blob/master/libs/ofxHTTP/include/ofx/HTTP/IPVideoRoute.h
     // https://github.com/bakercp/ofxHTTP/blob/master/libs/ofxHTTP/src/IPVideoRoute.cpp
-    fbo.allocate(camWidth*2, camHeight, GL_RGBA);
+    sendFbo.allocate(camWidth*2, camHeight, GL_RGBA);
     pixels.allocate(camWidth*2, camHeight, OF_IMAGE_COLOR);
+    projectorFbo.allocate(camWidth, camHeight, GL_RGBA);
+
     fboScaleW = ofGetWidth();
-    fboScaleH = int(((float) ofGetWidth() / (float) fbo.getWidth()) * (float) ofGetHeight());
+    fboScaleH = int(((float) ofGetWidth() / (float) sendFbo.getWidth()) * (float) ofGetHeight());
     fboPosX = 0;
     fboPosY = abs((ofGetHeight() - fboScaleH))/2;
-   
+    
     streamPort = settings.getValue("settings:stream_port", 7111);
     streamSettings.setPort(streamPort);
     streamSettings.ipVideoRouteSettings.setMaxClientConnections(settings.getValue("settings:max_stream_connections", 5)); // default 5
@@ -99,7 +120,7 @@ void ofApp::update() {
     }
 
     if (camReady) {
-        updateStreamingVideo();
+        if (debug) updateStreamingVideo();
         camReady = false;
     }
 }
@@ -108,14 +129,19 @@ void ofApp::update() {
 void ofApp::draw() {
     ofBackground(0);
     if (debug) {
-        fbo.draw(0, 0, fboScaleW, fboScaleH);
+        projectorFbo.begin();
+        ofTranslate(mouseX, mouseY);  
+        target.draw(-target.getWidth()/2,-target.getHeight()/2);  
+        projectorFbo.end();
+
+        projectorFbo.draw(fboPosX, fboPosY, fboScaleW, fboScaleH);
     } else {
-        warpedColor.draw(0, 0);
+        warpedColor.draw(fboPosX, fboPosY, fboScaleW, fboScaleH);
     }
 }
 
 void ofApp::updateStreamingVideo() {
-    fbo.begin();
+    sendFbo.begin();
     if(homographyReady) {
         imitate(warpedColor, frame);
         // this is how you warp one ofImage into another ofImage given the homography matrix
@@ -126,9 +152,9 @@ void ofApp::updateStreamingVideo() {
     } else {
         drawMat(frame, camWidth, 0);
     }
-    fbo.end();
+    sendFbo.end();
 
-    fbo.readToPixels(pixels);
+    sendFbo.readToPixels(pixels);
     streamServer.send(pixels);
 }
 
@@ -276,7 +302,8 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 void ofApp::mouseDragged(int x, int y, int button) {
     if (moveTarget) {
-
+        mouseX = x;
+        mouseY = y;
     }
 }
 
@@ -285,8 +312,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
 }
 
 void ofApp::keyPressed(int key) {
-    if(key == ' ') {
-        //
+    if(key == OF_KEY_TAB) {
+        debug = !debug;
     }
 }
 
