@@ -54,6 +54,7 @@ class ofApp : public ofBaseApp {
 
         bool camReady;
         ofImage target;
+        bool moveTarget;
 
         //~ ~ ~ homography
 

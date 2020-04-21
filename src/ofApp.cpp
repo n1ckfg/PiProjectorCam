@@ -13,6 +13,8 @@ void ofApp::setup() {
     camHeight = settings.getValue("settings:height", 240);
     framerate = settings.getValue("settings:framerate", 60);
 
+    target.load("calibration/target/target.png");
+
     ofSetFrameRate(framerate);
     ofSetVerticalSync(true);
     ofHideCursor();
@@ -104,9 +106,11 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+    ofBackground(0);
     if (debug) {
-        ofBackground(0);
         fbo.draw(0, 0, fboScaleW, fboScaleH);
+    } else {
+        warpedColor.draw(0, 0);
     }
 }
 
@@ -267,25 +271,17 @@ bool ofApp::movePoint(vector<ofVec2f>& points, ofVec2f point) {
 }
 
 void ofApp::mousePressed(int x, int y, int button) {
-    ofVec2f cur(x, y);
-    ofVec2f rightOffset(left.getWidth(), 0);
-    if(!movePoint(leftPoints, cur) && !movePoint(rightPoints, cur)) {
-        if(x > left.getWidth()) {
-            cur -= rightOffset;
-        }
-        leftPoints.push_back(cur);
-        rightPoints.push_back(cur + rightOffset);
-    }
+    moveTarget = true;
 }
 
 void ofApp::mouseDragged(int x, int y, int button) {
-    if(movingPoint) {
-        curPoint->set(x, y);
+    if (moveTarget) {
+
     }
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
-    movingPoint = false;
+    moveTarget = false;
 }
 
 void ofApp::keyPressed(int key) {
