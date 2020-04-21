@@ -2,8 +2,8 @@
 <settings>
     <host>BrazilV.local</host>
     <port>7110</port>
-    <width>320</width>
-    <height>240</height>
+    <width>640</width>
+    <height>480</height>
     <framerate>30</framerate>
     <debug>1</debug>
     <use_rpi_cam>1</use_rpi_cam>

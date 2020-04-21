@@ -134,9 +134,9 @@ void ofApp::draw() {
         target.draw(-target.getWidth()/2,-target.getHeight()/2);  
         projectorFbo.end();
 
-        projectorFbo.draw(fboPosX, fboPosY, fboScaleW, fboScaleH);
+        projectorFbo.draw(0, 0, fboScaleW, fboScaleH);
     } else {
-        warpedColor.draw(fboPosX, fboPosY, fboScaleW, fboScaleH);
+        warpedColor.draw(0, 0, fboScaleW, fboScaleH);
     }
 }
 
