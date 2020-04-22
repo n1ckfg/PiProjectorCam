@@ -24,7 +24,7 @@ void ofApp::setup() {
     
     targetOrig.load("calibration/target/target.png");
     imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
-    targetOrig.resize(imageStartSize, (int) ((float) imageStartSize * imageRatio));
+    targetOrig.resize(camWidth, (int) ((float) camWidth * imageRatio));
 
     imageChangeSize(imageStartSize);
 
