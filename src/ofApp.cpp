@@ -14,10 +14,6 @@ void ofApp::setup() {
     camHeight = settings.getValue("settings:height", 240);
     framerate = settings.getValue("settings:framerate", 60);
 
-    targetOrig.load("calibration/target/target.png");
-    imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
-    targetOrig.resize(camWidth, (int) ((float) camHeight * imageRatio));
-
     mouseX = 0;
     mouseY = 0;
     imageStartSize = camWidth/2;
@@ -25,6 +21,11 @@ void ofApp::setup() {
     imageCurrentSize = imageStartSize;
     imageSizeIncrement = imageMinSize;
     screenMarginW = ofGetWidth() - ((float) camWidth * ((float) ofGetHeight() / (float) camHeight));
+    
+    targetOrig.load("calibration/target/target.png");
+    imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
+    targetOrig.resize(imageStartSize, (int) ((float) imageStartSize * imageRatio));
+
     imageChangeSize(imageStartSize);
 
     ofSetFrameRate(framerate);
