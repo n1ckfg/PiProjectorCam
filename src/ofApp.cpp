@@ -148,16 +148,16 @@ void ofApp::draw() {
 
 void ofApp::updateStreamingVideo() {
     if (debug) {
-        sendFbo.begin();
+        debugFbo.begin();
         projectorFbo.draw(0,0);
         if (homographyReady) {
             warpedColor.draw(camWidth, 0);
         } else {
             drawMat(frame, camWidth, 0);
         }
-        sendFbo.end();
+        debugFbo.end();
 
-        sendFbo.readToPixels(debugPixels);
+        debugFbo.readToPixels(debugPixels);
         streamServer.send(debugPixels);
     } else {
         mainFbo.readToPixels(mainPixels);
