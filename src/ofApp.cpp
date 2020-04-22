@@ -5,7 +5,7 @@ using namespace ofxCv;
 
 //--------------------------------------------------------------
 void ofApp::imageChangeSize(int newSize) {
-    imageRatio = (float) target.getHeight() / (float) target.getWidth();
+    imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
     imageW = newSize;
     imageH = (int) ((float) imageW * imageRatio);
  
@@ -312,10 +312,11 @@ void ofApp::keyPressed(int key) {
     if (key == OF_KEY_TAB) {
         debug = !debug;
     } else if (key == '=') {
-        imageCurrentSize += imageSizeIncrement;
-
+        imageCurrentSize = ofClamp(imageCurrentSize + imageSizeIncrement, imageStartSize/10, imageStartSize);
+        imageChangeSize(imageCurrentSize);
     } else if (key == '-') {
-
+        imageCurrentSize = ofClamp(imageCurrentSize - imageSizeIncrement, imageStartSize/10, imageStartSize);
+        imageChangeSize(imageCurrentSize);
     }
 }
 
