@@ -10,8 +10,7 @@ void ofApp::imageChangeSize(int newSize) {
     imageH = (int) ((float) imageW * imageRatio);
  
     target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
-    imitate(target, targetOrig);
-    //target.setFromPixels(targetOrig.getPixels());
+    target.setFromPixels(targetOrig.getPixels());
     target.resize(imageW, imageH);
     target.update();
 }
@@ -30,8 +29,9 @@ void ofApp::setup() {
     mouseX = 0;
     mouseY = 0;
     imageStartSize = camWidth/2;
+    imageMinSize = imageStartSize/10;
     imageCurrentSize = imageStartSize;
-    imageSizeIncrement = 10;
+    imageSizeIncrement = imageMinSize;
     screenMarginW = ofGetWidth() - ((float) camWidth * ((float) ofGetHeight() / (float) camHeight));
     imageChangeSize(imageStartSize);
 
@@ -313,10 +313,10 @@ void ofApp::keyPressed(int key) {
     if (key == OF_KEY_TAB) {
         debug = !debug;
     } else if (key == '=') {
-        imageCurrentSize = ofClamp(imageCurrentSize + imageSizeIncrement, imageStartSize/10, imageStartSize);
+        imageCurrentSize = ofClamp(imageCurrentSize + imageSizeIncrement, imageMinSize, imageStartSize);
         imageChangeSize(imageCurrentSize);
     } else if (key == '-') {
-        imageCurrentSize = ofClamp(imageCurrentSize - imageSizeIncrement, imageStartSize/10, imageStartSize);
+        imageCurrentSize = ofClamp(imageCurrentSize - imageSizeIncrement, imageMinSize, imageStartSize);
         imageChangeSize(imageCurrentSize);
     }
 }
