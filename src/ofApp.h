@@ -51,7 +51,7 @@ class ofApp : public ofBaseApp {
         void updateStreamingVideo();
 
         bool camReady;
-        ofImage target;
+        ofImage target, targetOrig;
         int mouseX, mouseY, imageW, imageH, imageStartSize, imageSizeIncrement;
         int screenMarginW;
         float imageRatio;

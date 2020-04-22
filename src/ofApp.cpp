@@ -9,6 +9,8 @@ void ofApp::imageChangeSize(int newSize) {
     imageW = newSize;
     imageH = (int) ((float) imageW * imageRatio);
  
+    target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
+    imitate(target, targetOrig);
     target.resize(imageW, imageH);
     target.update();
 }
@@ -23,7 +25,7 @@ void ofApp::setup() {
     camHeight = settings.getValue("settings:height", 240);
     framerate = settings.getValue("settings:framerate", 60);
 
-    target.load("calibration/target/target.png");
+    targetOrig.load("calibration/target/target.png");
     mouseX = 0;
     mouseY = 0;
     imageStartSize = camWidth/2;
