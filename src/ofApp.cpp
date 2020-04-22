@@ -8,7 +8,10 @@ void ofApp::imageChangeSize(int newSize) {
     imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
     imageW = newSize;
     imageH = (int) ((float) imageW * imageRatio);
- 
+    
+    offsetX = target.getWidth() / 2;
+    offsetY = target.getHeight() / 2;
+
     target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
     target.setFromPixels(targetOrig.getPixels());
     target.resize(imageW, imageH);
@@ -128,7 +131,7 @@ void ofApp::draw() {
         projectorFbo.begin();
         ofBackground(0);
         ofTranslate(mouseX, mouseY);  
-        target.draw(-target.getWidth()/2,-target.getHeight()/2);  
+        target.draw(-offsetX,-offsetY);  
         projectorFbo.end();
 
         projectorFbo.draw(screenMarginW/2, 0, ofGetWidth()-screenMarginW, ofGetHeight());
