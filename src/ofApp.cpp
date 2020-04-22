@@ -9,6 +9,7 @@ void ofApp::setup() {
 
     debug = (bool) settings.getValue("settings:debug", 1);
     useRpiCam = (bool) settings.getValue("settings:use_rpi_cam", 1);
+    streaming = (bool) settings.getValue("settings:streaming", 1);
     camWidth = settings.getValue("settings:width", 320);
     camHeight = settings.getValue("settings:height", 240);
     framerate = settings.getValue("settings:framerate", 60);
@@ -68,8 +69,12 @@ void ofApp::setup() {
     // * stream video *
     // https://github.com/bakercp/ofxHTTP/blob/master/libs/ofxHTTP/include/ofx/HTTP/IPVideoRoute.h
     // https://github.com/bakercp/ofxHTTP/blob/master/libs/ofxHTTP/src/IPVideoRoute.cpp
-    sendFbo.allocate(camWidth*2, camHeight, GL_RGBA);
-    pixels.allocate(camWidth*2, camHeight, OF_IMAGE_COLOR);
+    debugFbo.allocate(camWidth*2, camHeight, GL_RGBA);
+    debugPixels.allocate(camWidth*2, camHeight, OF_IMAGE_COLOR);
+    
+    mainFbo.allocate(camWidth, camHeight, GL_RGBA);
+    mainPixels.allocate(camWidth, camHeight, OF_IMAGE_COLOR);
+    
     projectorFbo.allocate(camWidth, camHeight, GL_RGBA);
    
     streamPort = settings.getValue("settings:stream_port", 7111);
@@ -104,14 +109,22 @@ void ofApp::update() {
     }
 
     if (camReady) {
-        if (debug) updateStreamingVideo();
+        if (homographyReady) {
+            imitate(warpedColor, frame);
+            // this is how you warp one ofImage into another ofImage given the homography matrix
+            // CV INTER NN is 113 fps, CV_INTER_LINEAR is 93 fps
+            warpPerspective(frame, warpedColor, homography, CV_INTER_LINEAR);
+            warpedColor.update();
+        }
+
+        if (streaming) updateStreamingVideo();
         camReady = false;
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    ofBackground(0,0,255);
+    ofBackground(0);
     if (debug) {
         projectorFbo.begin();
         ofBackground(0);
@@ -121,27 +134,35 @@ void ofApp::draw() {
 
         projectorFbo.draw(screenMarginW/2, 0, ofGetWidth()-screenMarginW, ofGetHeight());
     } else {
-        warpedColor.draw(screenMarginW/2, 0, ofGetWidth()-screenMarginW, ofGetHeight());
+        mainFbo.begin();
+        if (homographyReady) {
+            warpedColor.draw(0, 0);
+        } else {
+            drawMat(frame, 0, 0);
+        }
+        mainFbo.end();
+
+        mainFbo.draw(screenMarginW/2, 0, ofGetWidth()-screenMarginW, ofGetHeight());
     }
 }
 
 void ofApp::updateStreamingVideo() {
-    sendFbo.begin();
-    projectorFbo.draw(0,0);
-    if(homographyReady) {
-        imitate(warpedColor, frame);
-        // this is how you warp one ofImage into another ofImage given the homography matrix
-        // CV INTER NN is 113 fps, CV_INTER_LINEAR is 93 fps
-        warpPerspective(frame, warpedColor, homography, CV_INTER_LINEAR);
-        warpedColor.update();
-        warpedColor.draw(camWidth, 0);
-    } else {
-        drawMat(frame, camWidth, 0);
-    }
-    sendFbo.end();
+    if (debug) {
+        sendFbo.begin();
+        projectorFbo.draw(0,0);
+        if (homographyReady) {
+            warpedColor.draw(camWidth, 0);
+        } else {
+            drawMat(frame, camWidth, 0);
+        }
+        sendFbo.end();
 
-    sendFbo.readToPixels(pixels);
-    streamServer.send(pixels);
+        sendFbo.readToPixels(debugPixels);
+        streamServer.send(debugPixels);
+    } else {
+        mainFbo.readToPixels(mainPixels);
+        streamServer.send(mainPixels);
+    }
 }
 
 //~ ~ ~ homography

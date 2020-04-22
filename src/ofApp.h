@@ -21,6 +21,7 @@ class ofApp : public ofBaseApp {
         ofxXmlSettings settings;
         bool debug; // draw to local screen, default true
         bool useRpiCam;
+        bool streaming;
         int framerate;
 
         ofVideoGrabber vidGrabber;
@@ -42,8 +43,8 @@ class ofApp : public ofBaseApp {
         // 0 off, 1 auto, 2 night, 3 night preview, 4 backlight, 5 spotlight, 6 sports, 7, snow, 8 beach, 9 very long, 10 fixed fps, 11 antishake, 12 fireworks, 13 max
         int camExposureMode; // 0 to 13, default 0
 
-        ofFbo sendFbo, projectorFbo;
-        ofPixels pixels;
+        ofFbo debugFbo, mainFbo, projectorFbo;
+        ofPixels debugPixels, mainPixels;
 
         int streamPort;
         ofxHTTP::SimpleIPVideoServer streamServer;

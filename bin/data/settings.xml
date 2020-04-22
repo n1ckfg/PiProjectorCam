@@ -6,6 +6,7 @@
     <height>480</height>
     <framerate>30</framerate>
     <debug>1</debug>
+    <streaming>1</streaming>
     <use_rpi_cam>1</use_rpi_cam>
     <!-- * -->
     <!-- camera settings -->
