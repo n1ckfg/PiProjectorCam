@@ -52,7 +52,7 @@ class ofApp : public ofBaseApp {
 
         bool camReady;
         ofImage target, targetOrig;
-        int mouseX, mouseY, imageW, imageH, imageStartSize, imageSizeIncrement;
+        int mouseX, mouseY, imageW, imageH, imageStartSize, imageCurrentSize, imageSizeIncrement;
         int screenMarginW;
         float imageRatio;
         bool moveTarget;

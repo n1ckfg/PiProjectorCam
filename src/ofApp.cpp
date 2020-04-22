@@ -10,7 +10,7 @@ void ofApp::imageChangeSize(int newSize) {
     imageH = (int) ((float) imageW * imageRatio);
  
     target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
-    imitate(target, targetOrig);
+    target.setFromPixels(targetOrig.getPixels());
     target.resize(imageW, imageH);
     target.update();
 }
@@ -29,6 +29,7 @@ void ofApp::setup() {
     mouseX = 0;
     mouseY = 0;
     imageStartSize = camWidth/2;
+    imageCurrentSize = imageStartSize;
     imageSizeIncrement = 10;
     screenMarginW = ofGetWidth() - ((float) camWidth * ((float) ofGetHeight() / (float) camHeight));
     imageChangeSize(imageStartSize);
@@ -308,8 +309,13 @@ void ofApp::mouseReleased(int x, int y, int button) {
 }
 
 void ofApp::keyPressed(int key) {
-    if(key == OF_KEY_TAB) {
+    if (key == OF_KEY_TAB) {
         debug = !debug;
+    } else if (key == '=') {
+        imageCurrentSize += imageSizeIncrement;
+
+    } else if (key == '-') {
+
     }
 }
 
