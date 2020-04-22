@@ -86,5 +86,6 @@ class ofApp : public ofBaseApp {
         string outputFileType = "png";
         bool finished = false;
         void imageChangeSize(int newSize);
+        void imageSetPos(int x, int y);
 
 };

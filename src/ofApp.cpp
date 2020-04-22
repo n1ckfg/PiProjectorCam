@@ -4,20 +4,6 @@ using namespace cv;
 using namespace ofxCv;
 
 //--------------------------------------------------------------
-void ofApp::imageChangeSize(int newSize) {
-    imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
-    imageW = newSize;
-    imageH = (int) ((float) imageW * imageRatio);
-    
-    target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
-    target.setFromPixels(targetOrig.getPixels());
-    target.resize(imageW, imageH);
-
-    offsetX = target.getWidth() / 2;
-    offsetY = target.getHeight() / 2;
-}
-
-
 void ofApp::setup() {
     settings.loadFile("settings.xml");
 
@@ -302,8 +288,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 void ofApp::mouseDragged(int x, int y, int button) {
     if (moveTarget) {
-        mouseX = ofClamp(x, offsetX, projectorFbo.getWidth() - offsetX);
-        mouseY = ofClamp(y, offsetY, projectorFbo.getHeight() - offsetY);
+        imageSetPos(x, y);
     }
 }
 
@@ -326,3 +311,22 @@ void ofApp::keyPressed(int key) {
     }
 }
 
+void ofApp::imageChangeSize(int newSize) {
+    imageRatio = (float) targetOrig.getHeight() / (float) targetOrig.getWidth();
+    imageW = newSize;
+    imageH = (int) ((float) imageW * imageRatio);
+    
+    target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
+    target.setFromPixels(targetOrig.getPixels());
+    target.resize(imageW, imageH);
+
+    offsetX = target.getWidth() / 2;
+    offsetY = target.getHeight() / 2;
+
+    imageSetPos(mouseX, mouseY);
+}
+
+void ofApp::imageSetPos(int x, int y) {
+    mouseX = ofClamp(x, offsetX, projectorFbo.getWidth() - offsetX);
+    mouseY = ofClamp(y, offsetY, projectorFbo.getHeight() - offsetY);
+}
