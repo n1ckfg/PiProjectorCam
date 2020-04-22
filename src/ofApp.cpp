@@ -300,8 +300,8 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 void ofApp::mouseDragged(int x, int y, int button) {
     if (moveTarget) {
-        mouseX = x;
-        mouseY = y;
+        mouseX = ofClamp(x, offsetX, projectorFbo.getWidth() - offsetX);
+        mouseY = ofClamp(y, offsetY, projectorFbo.getHeight() - offsetY);
     }
 }
 
@@ -317,6 +317,9 @@ void ofApp::keyPressed(int key) {
         imageChangeSize(imageCurrentSize);
     } else if (key == '-') {
         imageCurrentSize = ofClamp(imageCurrentSize - imageSizeIncrement, imageMinSize, imageStartSize);
+        imageChangeSize(imageCurrentSize);
+    } else if (key == 'r') {
+        imageCurrentSize = imageStartSize;
         imageChangeSize(imageCurrentSize);
     }
 }
