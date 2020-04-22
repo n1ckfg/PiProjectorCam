@@ -9,13 +9,12 @@ void ofApp::imageChangeSize(int newSize) {
     imageW = newSize;
     imageH = (int) ((float) imageW * imageRatio);
     
-    offsetX = target.getWidth() / 2;
-    offsetY = target.getHeight() / 2;
-
     target.allocate(targetOrig.getWidth(), targetOrig.getHeight(), OF_IMAGE_COLOR);
     target.setFromPixels(targetOrig.getPixels());
     target.resize(imageW, imageH);
-    target.update();
+
+    offsetX = target.getWidth() / 2;
+    offsetY = target.getHeight() / 2;
 }
 
 
